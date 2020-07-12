@@ -11,10 +11,15 @@ process.on('SIGTERM', () => {
 
 app.get('/', function (req, res) {
 	fs.readFile('./ngrok.log', (err, data) => {
-		if(err) console.log(err);
-		reg = /URL:tcp:\/\/(.*?)\s/
-		data = reg.exec(data)[1] || 'no tcp port open';
-		res.send(data);
+		if(err) {
+			console.log(err);
+			res.send("<h1>Error in reading ngrok.log file<h1>")
+		}
+		else{
+			reg = /URL:tcp:\/\/(.*?)\s/
+			data = reg.exec(data)[1] || 'no tcp port open';
+			res.send(data);
+		}
 	});
 });
 
